@@ -1,0 +1,44 @@
+
+
+
+#CrosswordCompilerPuz {
+
+
+}
+
+#puzzle_title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 3em;
+    text-align: center;
+}
+
+
+@media only screen
+  and (min-device-width: 900px)
+
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+    body {
+      display: flex;
+      font-size: 1em;
+    }
+
+    header h1 a {
+            font-family: 'Roboto Slab', serif;
+            text-decoration: none;
+            font-size: 1.5em;
+            color: black;
+    }
+
+    main {
+      margin-left: 5%;
+    }
+
+    #post-list {
+
+      grid-template-columns: 25% 25% 25% 25%;
+
+
+    }
+
+}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ SITEURL }}/theme/css/puzzles.css">
+{% endblock %}
+{% block content %}
+<section id="content">
+{% block content_title %}
+{% endblock %}
+
+<h2>Puzzles</h2>
+<ul id="post-list">
+
+{% for article in articles %}
+{% if article.category == 'puzzles' %}
+        <li id="{{ article.category }}">
+          <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}<img src="../puzzle_stuff/{{ article.slug }}/{{ article.slug }}.png" alt="Unfilled grid for {{ article.title }} id="grid_pic"></a>
+          </li>
+{% endif %}
+{% endfor %}
+  <li id="puzzles">
+    <a href="https://puzzles.independent.co.uk/games/cryptic-crossword-independent?puzzleDate=20201219">Independent 10667<img src="https://arenacloud.cdn.arkadiumhosted.com/arenaxstorage-blob/arenax-games/independentCrypticCrossword/0.3/assets/thumbs/thumb2x.jpg" alt="Generic 'Independent Cryptic Crossword' cover image - a partially filled grid" id="grid_pic"></a>
+  </li>
+</ul><!-- /#posts-list -->
+</section><!-- /#content -->
+{% endblock content %}

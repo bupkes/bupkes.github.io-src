@@ -1,0 +1,467 @@
+From db8dc353b37924ae0505e1e71698396858cdc187 Mon Sep 17 00:00:00 2001
+From: bupkes <mzholland@fastmail.fm>
+Date: Thu, 24 Dec 2020 09:59:52 +0000
+Subject: Initial Pelican commit to content
+
+---
+ Makefile                               |  82 +++++++++++++++++++++++
+ __pycache__/pelicanconf.cpython-38.pyc | Bin 0 -> 771 bytes
+ output/archives.html                   |  25 +++++++
+ output/authors.html                    |  24 +++++++
+ output/categories.html                 |  24 +++++++
+ output/index.html                      |  27 ++++++++
+ output/tags.html                       |  24 +++++++
+ pelicanconf.py                         |  35 ++++++++++
+ publishconf.py                         |  25 +++++++
+ tasks.py                               |  87 +++++++++++++++++++++++++
+ 10 files changed, 353 insertions(+)
+ create mode 100644 Makefile
+ create mode 100644 __pycache__/pelicanconf.cpython-38.pyc
+ create mode 100644 output/archives.html
+ create mode 100644 output/authors.html
+ create mode 100644 output/categories.html
+ create mode 100644 output/index.html
+ create mode 100644 output/tags.html
+ create mode 100644 pelicanconf.py
+ create mode 100644 publishconf.py
+ create mode 100644 tasks.py
+
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000000000000000000000000000000000000..3d4e41e10001c73cc7331494714908b125d43381
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,82 @@
++PY?=python3
++PELICAN?=pelican
++PELICANOPTS=
++
++BASEDIR=$(CURDIR)
++INPUTDIR=$(BASEDIR)/content
++OUTPUTDIR=$(BASEDIR)/output
++CONFFILE=$(BASEDIR)/pelicanconf.py
++PUBLISHCONF=$(BASEDIR)/publishconf.py
++
++GITHUB_PAGES_BRANCH=master
++
++
++DEBUG ?= 0
++ifeq ($(DEBUG), 1)
++	PELICANOPTS += -D
++endif
++
++RELATIVE ?= 0
++ifeq ($(RELATIVE), 1)
++	PELICANOPTS += --relative-urls
++endif
++
++help:
++	@echo 'Makefile for a pelican Web site                                           '
++	@echo '                                                                          '
++	@echo 'Usage:                                                                    '
++	@echo '   make html                           (re)generate the web site          '
++	@echo '   make clean                          remove the generated files         '
++	@echo '   make regenerate                     regenerate files upon modification '
++	@echo '   make publish                        generate using production settings '
++	@echo '   make serve [PORT=8000]              serve site at http://localhost:8000'
++	@echo '   make serve-global [SERVER=0.0.0.0]  serve (as root) to $(SERVER):80    '
++	@echo '   make devserver [PORT=8000]          serve and regenerate together      '
++	@echo '   make ssh_upload                     upload the web site via SSH        '
++	@echo '   make rsync_upload                   upload the web site via rsync+ssh  '
++	@echo '   make github                         upload the web site via gh-pages   '
++	@echo '                                                                          '
++	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
++	@echo 'Set the RELATIVE variable to 1 to enable relative urls                    '
++	@echo '                                                                          '
++
++html:
++	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
++
++clean:
++	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
++
++regenerate:
++	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
++
++serve:
++ifdef PORT
++	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT)
++else
++	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
++endif
++
++serve-global:
++ifdef SERVER
++	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT) -b $(SERVER)
++else
++	$(PELICAN) -l $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT) -b 0.0.0.0
++endif
++
++
++devserver:
++ifdef PORT
++	$(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -p $(PORT)
++else
++	$(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
++endif
++
++publish:
++	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
++
++github: publish
++	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
++	git push origin $(GITHUB_PAGES_BRANCH)
++
++
++.PHONY: html help clean regenerate serve serve-global devserver stopserver publish github
+\ No newline at end of file
+diff --git a/__pycache__/pelicanconf.cpython-38.pyc b/__pycache__/pelicanconf.cpython-38.pyc
+new file mode 100644
+index 0000000000000000000000000000000000000000..157dfcc521b9f371b962cca30ab2ce8f7472b86d
+GIT binary patch
+literal 771
+zcmZ`%&2G~`5cXf3G)-s}M7eOVggE#TSCzORgjgj`8gT3=c2v3-%Xl}5i{rKIHDJFH
+zue4XV^c8wy?W8Cdb~U4!Z~j*M&AQ+33jBQ8{PAyPLHJ!er$^$>M=tpdS4co&EbK)n
+ziUN|Lgk&fq1uCcoTS$c}YQr|_zz&x)E?q9?TzcpX_E8r;L+9`UbzDL3J@9UVF0w(9
+zL?J=gk0Xk+AkLw(2q>+3w`GPjx6CQt=S*PjkR%i*wCbBhMpA58Btax$5>9Mg(IwVi
+z;y4O}q`KTun!YoPEvD%K8iizU=u*{PmUKsw5y`gI@R*hUgLnp1KSjxXa9zDTM(=BP
+zl#-B;x~gt6x+8_g=V*I^qD`ssjycxiDEXFaQKFTk$Ta@eO|;cEQH&qO*Sf^Z-aM5B
+z2>m}hYuCRbRnI{}=niLEPQoaNn}R0xP?Mz(Sl9PA1uZh{`&rEpQ^DH1aaOG3&OOrx
+z3zM~LYrV3VvIO1@>v;2p2_4&Hy@@#mYs>R3V9!{8YMK)tSe6ewXTgSJ;F&XLb>|=O
+z8hhcbfbCkqn>+RiJUEOzK`u^_mFvQmHMc*zP<5U099V4lG<gYTbGzyHOUN$y`y2H*
+zHFji=jXhrgW5QYfN`4yGS64pBaFBEBtv}`#jlM^;G=A^}$q)Ns9Eq;~eUz50^PZDa
+b#P|bWXd!>aRZmhxex>Hhja~b)qAK!VC!^o(
+
+literal 0
+HcmV?d00001
+
+diff --git a/output/archives.html b/output/archives.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..eeb589caa6afe643b9ac2e7f9ae782f5347f0f9d
+--- /dev/null
++++ b/output/archives.html
+@@ -0,0 +1,25 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++        <title>Wyrd Systems - Archives</title>
++        <meta charset="utf-8" />
++</head>
++
++<body id="index" class="home">
++        <header id="banner" class="body">
++                <h1><a href="/">Wyrd Systems <strong></strong></a></h1>
++        </header><!-- /#banner -->
++        <nav id="menu"><ul>
++        </ul></nav><!-- /#menu -->
++<h1>Archives for Wyrd Systems</h1>
++
++<dl>
++</dl>
++        <footer id="contentinfo" class="body">
++                <address id="about" class="vcard body">
++                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
++                which takes great advantage of <a href="http://python.org">Python</a>.
++                </address><!-- /#about -->
++        </footer><!-- /#contentinfo -->
++</body>
++</html>
+\ No newline at end of file
+diff --git a/output/authors.html b/output/authors.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..2a9ceb741258baf4ad27f61b8538614e0da185ea
+--- /dev/null
++++ b/output/authors.html
+@@ -0,0 +1,24 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++        <title>Wyrd Systems - Authors</title>
++        <meta charset="utf-8" />
++</head>
++
++<body id="index" class="home">
++        <header id="banner" class="body">
++                <h1><a href="/">Wyrd Systems <strong></strong></a></h1>
++        </header><!-- /#banner -->
++        <nav id="menu"><ul>
++        </ul></nav><!-- /#menu -->
++    <h1>Authors on Wyrd Systems</h1>
++    <ul>
++    </ul>
++        <footer id="contentinfo" class="body">
++                <address id="about" class="vcard body">
++                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
++                which takes great advantage of <a href="http://python.org">Python</a>.
++                </address><!-- /#about -->
++        </footer><!-- /#contentinfo -->
++</body>
++</html>
+\ No newline at end of file
+diff --git a/output/categories.html b/output/categories.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..30f0b78eebb4d7c5b4e87410389c492466659dd7
+--- /dev/null
++++ b/output/categories.html
+@@ -0,0 +1,24 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++        <title>Wyrd Systems - Categories</title>
++        <meta charset="utf-8" />
++</head>
++
++<body id="index" class="home">
++        <header id="banner" class="body">
++                <h1><a href="/">Wyrd Systems <strong></strong></a></h1>
++        </header><!-- /#banner -->
++        <nav id="menu"><ul>
++        </ul></nav><!-- /#menu -->
++    <h1>Categories on Wyrd Systems</h1>
++    <ul>
++    </ul>
++        <footer id="contentinfo" class="body">
++                <address id="about" class="vcard body">
++                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
++                which takes great advantage of <a href="http://python.org">Python</a>.
++                </address><!-- /#about -->
++        </footer><!-- /#contentinfo -->
++</body>
++</html>
+\ No newline at end of file
+diff --git a/output/index.html b/output/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..c7d5d5a21ec0b6267725d6f039a63fa27c5fe0eb
+--- /dev/null
++++ b/output/index.html
+@@ -0,0 +1,27 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++        <title>Wyrd Systems</title>
++        <meta charset="utf-8" />
++</head>
++
++<body id="index" class="home">
++        <header id="banner" class="body">
++                <h1><a href="/">Wyrd Systems <strong></strong></a></h1>
++        </header><!-- /#banner -->
++        <nav id="menu"><ul>
++        </ul></nav><!-- /#menu -->
++<section id="content">
++<h2>All articles</h2>
++
++<ol id="post-list">
++</ol><!-- /#posts-list -->
++</section><!-- /#content -->
++        <footer id="contentinfo" class="body">
++                <address id="about" class="vcard body">
++                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
++                which takes great advantage of <a href="http://python.org">Python</a>.
++                </address><!-- /#about -->
++        </footer><!-- /#contentinfo -->
++</body>
++</html>
+\ No newline at end of file
+diff --git a/output/tags.html b/output/tags.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..86bfa429525b274fb8771aef3acafa8cce3d66c3
+--- /dev/null
++++ b/output/tags.html
+@@ -0,0 +1,24 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++        <title>Wyrd Systems - Tags</title>
++        <meta charset="utf-8" />
++</head>
++
++<body id="index" class="home">
++        <header id="banner" class="body">
++                <h1><a href="/">Wyrd Systems <strong></strong></a></h1>
++        </header><!-- /#banner -->
++        <nav id="menu"><ul>
++        </ul></nav><!-- /#menu -->
++    <h1>Tags for Wyrd Systems</h1>
++    <ul>
++    </ul>
++        <footer id="contentinfo" class="body">
++                <address id="about" class="vcard body">
++                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
++                which takes great advantage of <a href="http://python.org">Python</a>.
++                </address><!-- /#about -->
++        </footer><!-- /#contentinfo -->
++</body>
++</html>
+\ No newline at end of file
+diff --git a/pelicanconf.py b/pelicanconf.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e89e5b6ce33ffa66e7e8c7dfc26a55554417b6cb
+--- /dev/null
++++ b/pelicanconf.py
+@@ -0,0 +1,35 @@
++#!/usr/bin/env python
++# -*- coding: utf-8 -*- #
++from __future__ import unicode_literals
++
++AUTHOR = 'Matt'
++SITENAME = 'Wyrd Systems'
++SITEURL = ''
++
++PATH = 'content'
++
++TIMEZONE = 'Europe/London'
++
++DEFAULT_LANG = 'en'
++
++# Feed generation is usually not desired when developing
++FEED_ALL_ATOM = None
++CATEGORY_FEED_ATOM = None
++TRANSLATION_FEED_ATOM = None
++AUTHOR_FEED_ATOM = None
++AUTHOR_FEED_RSS = None
++
++# Blogroll
++LINKS = (('Pelican', 'http://getpelican.com/'),
++         ('Python.org', 'http://python.org/'),
++         ('Jinja2', 'http://jinja.pocoo.org/'),
++         ('You can modify those links in your config file', '#'),)
++
++# Social widget
++SOCIAL = (('You can add links in your config file', '#'),
++          ('Another social link', '#'),)
++
++DEFAULT_PAGINATION = 10
++
++# Uncomment following line if you want document-relative URLs when developing
++#RELATIVE_URLS = True
+\ No newline at end of file
+diff --git a/publishconf.py b/publishconf.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..822a49cc036d3f5f59531a96e751d81570832cd1
+--- /dev/null
++++ b/publishconf.py
+@@ -0,0 +1,25 @@
++#!/usr/bin/env python
++# -*- coding: utf-8 -*- #
++from __future__ import unicode_literals
++
++# This file is only used if you use `make publish` or
++# explicitly specify it as your config file.
++
++import os
++import sys
++sys.path.append(os.curdir)
++from pelicanconf import *
++
++# If your site is available via HTTPS, make sure SITEURL begins with https://
++SITEURL = 'http://wyrd.systems'
++RELATIVE_URLS = False
++
++FEED_ALL_ATOM = 'feeds/all.atom.xml'
++CATEGORY_FEED_ATOM = 'feeds/{slug}.atom.xml'
++
++DELETE_OUTPUT_DIRECTORY = True
++
++# Following items are often useful when publishing
++
++#DISQUS_SITENAME = ""
++#GOOGLE_ANALYTICS = ""
+\ No newline at end of file
+diff --git a/tasks.py b/tasks.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..631eb33ca1b5c6028e975b04007f2209a7e62856
+--- /dev/null
++++ b/tasks.py
+@@ -0,0 +1,87 @@
++# -*- coding: utf-8 -*-
++
++import os
++import shutil
++import sys
++import datetime
++
++from invoke import task
++from invoke.util import cd
++from pelican.server import ComplexHTTPRequestHandler, RootedHTTPServer
++
++CONFIG = {
++    # Local path configuration (can be absolute or relative to tasks.py)
++    'deploy_path': 'output',
++    # Github Pages configuration
++    'github_pages_branch': 'master',
++    'commit_message': "'Publish site on {}'".format(datetime.date.today().isoformat()),
++    # Port for `serve`
++    'port': 8000,
++}
++
++@task
++def clean(c):
++    """Remove generated files"""
++    if os.path.isdir(CONFIG['deploy_path']):
++        shutil.rmtree(CONFIG['deploy_path'])
++        os.makedirs(CONFIG['deploy_path'])
++
++@task
++def build(c):
++    """Build local version of site"""
++    c.run('pelican -s pelicanconf.py')
++
++@task
++def rebuild(c):
++    """`build` with the delete switch"""
++    c.run('pelican -d -s pelicanconf.py')
++
++@task
++def regenerate(c):
++    """Automatically regenerate site upon file modification"""
++    c.run('pelican -r -s pelicanconf.py')
++
++@task
++def serve(c):
++    """Serve site at http://localhost:8000/"""
++
++    class AddressReuseTCPServer(RootedHTTPServer):
++        allow_reuse_address = True
++
++    server = AddressReuseTCPServer(
++        CONFIG['deploy_path'],
++        ('', CONFIG['port']),
++        ComplexHTTPRequestHandler)
++
++    sys.stderr.write('Serving on port {port} ...\n'.format(**CONFIG))
++    server.serve_forever()
++
++@task
++def reserve(c):
++    """`build`, then `serve`"""
++    build(c)
++    serve(c)
++
++@task
++def preview(c):
++    """Build production version of site"""
++    c.run('pelican -s publishconf.py')
++
++
++@task
++def publish(c):
++    """Publish to production via rsync"""
++    c.run('pelican -s publishconf.py')
++    c.run(
++        'rsync --delete --exclude ".DS_Store" -pthrvz -c '
++        '{} {production}:{dest_path}'.format(
++            CONFIG['deploy_path'].rstrip('/') + '/',
++            **CONFIG))
++
++@task
++def gh_pages(c):
++    """Publish to GitHub Pages"""
++    preview(c)
++    c.run('ghp-import -b {github_pages_branch} '
++          '-m {commit_message} '
++          '{deploy_path} -p'.format(**CONFIG))
+-- 
+2.25.1
+
+

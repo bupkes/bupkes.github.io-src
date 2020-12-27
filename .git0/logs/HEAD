@@ -1,0 +1,13 @@
+0000000000000000000000000000000000000000 10799182bb0bcb6ea9b61db19535bc37becd6c16 bupkes <mzholland@fastmail.fm> 1608803777 +0000	clone: from https://GitHub.com/bupkes/bupkes.github.io
+10799182bb0bcb6ea9b61db19535bc37becd6c16 10799182bb0bcb6ea9b61db19535bc37becd6c16 bupkes <mzholland@fastmail.fm> 1608803850 +0000	checkout: moving from main to content
+10799182bb0bcb6ea9b61db19535bc37becd6c16 db8dc353b37924ae0505e1e71698396858cdc187 bupkes <mzholland@fastmail.fm> 1608803992 +0000	commit: Initial Pelican commit to content
+db8dc353b37924ae0505e1e71698396858cdc187 d7e55d18ac0293a3ecfbe02900de789600269170 bupkes <mzholland@fastmail.fm> 1608804364 +0000	commit: Added old files
+d7e55d18ac0293a3ecfbe02900de789600269170 10f83f7af4db452d970e157b7282e8bb28cba87f bupkes <mzholland@fastmail.fm> 1609065599 +0000	commit: Added Angel 10
+10f83f7af4db452d970e157b7282e8bb28cba87f 0c50d0fedc8125d64cc4c45daa767856e2fbb82b bupkes <mzholland@fastmail.fm> 1609065859 +0000	commit: Added Angel 10
+0c50d0fedc8125d64cc4c45daa767856e2fbb82b db190a8cdc90b22fe16927fbeaed52fc1e6829e1 bupkes <mzholland@fastmail.fm> 1609065990 +0000	rebase: checkout tmp
+db190a8cdc90b22fe16927fbeaed52fc1e6829e1 6a8d6060711fd05c36516daa8171713d3bd2984f bupkes <mzholland@fastmail.fm> 1609065993 +0000	rebase: Initial commit
+6a8d6060711fd05c36516daa8171713d3bd2984f e759c280f4eb35fd134ed8dcf82cfe3e5ff765b9 bupkes <mzholland@fastmail.fm> 1609065993 +0000	rebase: Initial Pelican commit to content
+e759c280f4eb35fd134ed8dcf82cfe3e5ff765b9 926c4d6d0fe26a6a5c382aa0510599a7308fba82 bupkes <mzholland@fastmail.fm> 1609065993 +0000	rebase: Added old files
+926c4d6d0fe26a6a5c382aa0510599a7308fba82 4630d0fa15e29e33f1a253bef3a5a11568a17917 bupkes <mzholland@fastmail.fm> 1609065993 +0000	rebase: Added Angel 10
+4630d0fa15e29e33f1a253bef3a5a11568a17917 8a84192e21ad88eccc08f35065789db27abf6b52 bupkes <mzholland@fastmail.fm> 1609066535 +0000	commit: Added Angel 10
+8a84192e21ad88eccc08f35065789db27abf6b52 8205a5b3dd8790c7b8aeaa85676b174c3ea2c528 bupkes <mzholland@fastmail.fm> 1609066555 +0000	merge master: Merge made by the 'recursive' strategy.

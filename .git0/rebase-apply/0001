@@ -1,0 +1,22 @@
+From 10799182bb0bcb6ea9b61db19535bc37becd6c16 Mon Sep 17 00:00:00 2001
+From: Matt <mzholland@fastmail.fm>
+Date: Thu, 24 Dec 2020 09:31:35 +0000
+Subject: Initial commit
+
+---
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..2b6a83a77ecc5a959767c3d34b99d2204c822bd0
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1 @@
++# bupkes.github.io
+\ No newline at end of file
+-- 
+2.25.1
+
+
